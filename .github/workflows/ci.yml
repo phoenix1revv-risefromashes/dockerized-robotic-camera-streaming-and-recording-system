@@ -49,18 +49,12 @@ jobs:
       - name: Check lint rules
         run: poetry run ruff check .
 
-      - name: Check application types
-        run: poetry run mypy src
+      - name: Check types
+        run: poetry run mypy src tests
 
-      - name: Check test types and run tests
-        if: hashFiles('tests/**/*.py') != ''
-        run: |
-          poetry run mypy tests
-          poetry run pytest -v
+      - name: Run tests
+        run: poetry run pytest -v
 
-      - name: Report bootstrap state
-        if: hashFiles('tests/**/*.py') == ''
-        run: echo "No test files exist on this branch yet; test checks were skipped."
 
       - name: Audit installed dependencies
         run: poetry run pip-audit --skip-editable
